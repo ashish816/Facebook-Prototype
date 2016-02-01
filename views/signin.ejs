@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<link rel="apple-touch-icon-precomposed" href="https://static.licdn.com/scds/common/u/img/icon/apple-touch-icon.png">
+<link rel="icon" href="https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico">
+
+<div  ng-app="" ng-controller="personController">
+<div id="header">
+<div class="container">
+<h1><img src="http://1.bp.blogspot.com/-L3x3E1r0hxE/Ti8ODbUCSCI/AAAAAAAAKJ4/Nwepq2LCy7M/s150/facebook-logo-spaced.png" alt="LinkedIn" class="logo" height="32" width="132"></h1>
+<div class="login">
+<fieldset>
+<legend>Sign In</legend>
+<ul>
+<li>
+<label>Email address</label>
+<div class="fieldgroup">
+<input type="email" ng-model="inputUsername" name="inputUsername" value="" id="inputUsername" autofocus tabindex="1" size="27" data-ime-mode-disabled>
+</div>
+</li>
+<li>
+<label>Password</label>
+<div class="fieldgroup">
+<input type="password" ng-model="inputPassword" name="inputPassword" value="" id="inputPassword" tabindex="2" size="27">
+</div>
+</li>
+<li class="button">
+<input type="button" ng-click="signIn()" name="signin" value="Sign In" id="signin" tabindex="3" class="btn-secondary">
+</li>
+</ul>
+</fieldset>
+</div>
+</div>
+</div>
+<div id="main-wrapper">
+<div id="main">
+<div id="global-error">
+<div style="color:green;font-size:160%;"role="alert">
+<p>{{ msg }}</p>
+</div>
+</div>
+<header>
+<div id="content">
+<h2><span class="text-gradient"></span><span class="headline">
+
+</noscript></span></h2>
+</div>
+</header>
+<section>
+<div class="two-row-image">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_1_150x150_v1.png" width="150" height="150" alt="Male Headshot">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_2_150x150_v1.png" width="150" height="150" alt="Female Headshot">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_3_150x150_v1.png" width="150" height="150" alt="Male Headshot">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_4_150x150_v1.png" width="150" height="150" alt="Female Headshot">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_5_150x150_v1.png" width="150" height="150" alt="Male Headshot">
+<img src="https://static.licdn.com/scds/common/u/images/apps/home/guesthome/ghp_international_6_150x150_v1.png" width="150" height="150" alt="Male Headshot">
+</div>
+</section>
+
+<section>
+<div class="leo-module mod-feat jointoday" id="module-id3">
+<div class="header"><h2>Sign UP</h2></div>
+<div class="content">
+<p>It's free and always will be. </p>
+
+
+<ul>
+<li id="first-name">
+<label id="control_gen_2" style="display: none;">First name</label>
+<div class="fieldgroup">
+<input type="text" ng-model="first_name" tabindex="5" maxlength="20" size="55" autocomplete="on" value="" name="first_name" placeholder="First name">
+</div>
+</li>
+<li id="last-name">
+<label id="control_gen_3" style="display: none;">Last name</label>
+<div class="fieldgroup">
+<input type="text" ng-model="last_name" tabindex="6" maxlength="40" size="55" autocomplete="on" value="" name="last_name" placeholder="Last name">
+</div>
+</li>
+<li id="email-address">
+<label id="control_gen_4" style="display: none;">Email address</label>
+<div class="fieldgroup">
+<input type="email" ng-model="email" data-ime-mode-disabled="" tabindex="7" maxlength="128" size="55" autocomplete="on" value="" name="email" placeholder="Email address">
+</div>
+</li>
+<li id="password">
+<label id="control_gen_5" style="display: none;">Password (6 or more characters)</label>
+<div class="fieldgroup">
+<input type="password" ng-model="password" tabindex="8" value="" name="password" placeholder="Password (6 or more characters)">
+</div>
+</li>
+</ul>
+
+
+<input type="button" ng-click="signUp()" tabindex="9" class="btn-action" value="Join now">
+</div>
+
+
+<script>
+	function personController($scope,$http,$location) {
+
+		$scope.signIn = function() {
+
+		if($scope.inputUsername == null)
+		{
+		alert("Email is required");
+		return;
+		}
+		if($scope.inputPassword == null)
+		{
+		alert("Password is required");
+		return;
+		}
+	    	$http({
+	            method: 'POST',
+	            url: '/signin',
+	            data: { "username": $scope.inputUsername, "password": $scope.inputPassword }
+
+	         }).success(function(response){
+
+	            alert(JSON.stringify(response));
+
+
+	            if(response.login == "Success")
+	           		window.location = '/successlogin';
+	            else
+	            	window.location = '/signin';
+	        }).error(function(error){
+	            alert("error");
+	        });
+	    };
+
+	$scope.signUp = function() {
+	if($scope.first_name == null)
+		{
+		alert("first name is required");
+		return;
+		}
+		if($scope.last_name == null)
+		{
+		alert("last name is required");
+		return;
+		}
+		if($scope.email == null)
+		{
+		alert("enter a valid email");
+		return;
+		}
+		if(($scope.password).length < 6)
+		{
+		alert("password of 6 or more characters is required");
+		return;
+		}
+
+	    	$http({
+	            method: 'POST',
+	            url: '/insertUser',
+	            data: { "first_name": $scope.first_name,"last_name": $scope.last_name, "email": $scope.email, "password": $scope.password }
+
+	         }).success(function(response){
+
+
+	            if(response.registeration == "Successfull")
+	            {
+	           		alert("Registered Successfully");
+	           		window.location = '/signin';
+
+	            	}
+	            else
+	            {
+	            alert("This email address is already registered");
+	            	window.location = '/signin';
+	            	}
+	        }).error(function(error){
+	            alert("error");
+	        });
+	    };
+	}
+
+	</script>
+</body>
+</html>

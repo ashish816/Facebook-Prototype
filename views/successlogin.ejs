@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style>
+div.relative {
+    position: relative;
+    border: 3px;
+}
+
+div.absolute {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 200px;
+    height: 400px;
+    border: 3px solid #BAC0C6;
+    background:#EDF0F5;
+}
+</style>
+</head>
+<body  style="background-color: #F0F0F0 ;">
+    <div ng-app= "myApp" ng-controller = "signincontroller">
+    <nav class="navbar navbar-default " style="background-color:#3A5795;">
+      <div class="container-fluid relative">
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="/homepage">Home</a></li>
+            <li><a href="/aboutPage">About</a></li>
+            <li><a href="/group">Groups</a></li>
+            <li><button type="button" class="btn btn-danger" ng-init ="checkNotification()" ng-click = "checkNotification()">Notifications <span class="badge">{{count}}</span></button></li>
+            <!-- <li><a href="#" onclick = "checkNotification()" >Notifications</a></li> -->
+          </ul>
+        </div>
+    </nav>
+    <div ng-show = "show" class= "container absolute" style="overflow-y:scroll;">
+            <div ng-repeat = "notification in notifications" >
+            <p>you have got one frined request from : {{notification.requestfrom}}</p>
+            <input type="button" class="btn btn-success" ng-click="acceptFriend(this)" value="Accept" id="{{notification.requestid}}" >
+            <input type="button" class="btn btn-danger" ng-click="rejectFriend(this)" value="Reject" id="{{notification.requestid}}">
+            <!-- <button type="button" class="btn btn-success">Accept</button>
+            <button type="button" class="btn btn-danger">Reject</button> -->
+            </div>
+    </div>
+</div>
+<script>
+var app = angular.module("myApp",[]);
+app.controller('signincontroller', function($scope, $http) {
+    $scope.show = true;
+     $scope.checkNotification = function () {
+             $scope.show = ! $scope.show;
+        $http({
+          method: 'Get',
+              url: '/notifications',
+           }).success(function(response){
+             $scope.notifications = JSON.parse(response.notifications);
+             $scope.count = $scope.notifications.length;
+             console.log("connResult:>>"+$scope.notifications);
+              }).error(function(error){
+              alert("error in notifications");
+          });
+    }
+
+    $scope.acceptFriend = function(notification) {
+        console.log(notification);
+    }
+    // checkNotification();
+});
+</script>
+</body>
+</html>

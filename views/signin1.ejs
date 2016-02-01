@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+
+<body style = "background-color:#EDF0F5 ">
+<div ng-app= "myapp" ng-controller = "signincontroller" class="container-fluid" style="background-color:#3A5795;padding:1%;">
+    <div class="row">
+        <div class="col-sm-6" style = "color:white">
+            <h1>facebook<h1>
+        </div>
+        <div class="col-sm-6" style = "color:white; padding-top: 2%" >
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email" ng-model = "inputUsername">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd" ng-model = "inputPassword">
+                </div>
+                <button type="button" class="btn btn-default" ng-click="signIn()">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Connect with friends and the world around you on Facebook.</h1><br><br>
+            <h4>See photos and updates from friends in News Feed.</h4><br><br>
+            <h4>Share what's new in your life on your Timeline.</h4><br><br>
+            <h4>Find more of what you're looking for with Facebook Search.</h4>
+        </div>
+        <div class="col-sm-6">
+            <h1>Sign Up</h1>
+            <h2>It's free and always will be.</h2>
+            <form role="form">
+                <div class="form-group">
+                    <label for="firstname">First Name:</label>
+                    <input type="text" class="form-control" id="firstname" ng-model= "first_name">
+                </div>
+                <div class="form-group">
+                    <label for="secondname">Second Name:</label>
+                    <input type="text" class="form-control" id="secondname" ng-model= "last_name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email" ng-model= "email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd" ng-model= "password">
+                </div>
+                <button type="submit" class="btn btn-success" ng-click = "signUp()">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+var app = angular.module("myapp",[]);
+app.controller('signincontroller', function($scope, $http) {
+
+		$scope.signIn = function() {
+
+		if($scope.inputUsername == null)
+		{
+		alert("Email is required");
+		return;
+		}
+		if($scope.inputPassword == null)
+		{
+		alert("Password is required");
+		return;
+		}
+	    	$http({
+	            method: 'POST',
+	            url: '/signin',
+	            data: { "username": $scope.inputUsername, "password": $scope.inputPassword }
+
+	         }).success(function(response){
+
+	            alert(JSON.stringify(response));
+
+
+	            if(response.login == "Success")
+	           		window.location = '/successlogin';
+	            else
+	            	window.location = '/signin';
+	        }).error(function(error){
+	            alert("error");
+	        });
+	    };
+
+	$scope.signUp = function() {
+	if($scope.first_name == null)
+		{
+		alert("first name is required");
+		return;
+		}
+		if($scope.last_name == null)
+		{
+		alert("last name is required");
+		return;
+		}
+		if($scope.email == null)
+		{
+		alert("enter a valid email");
+		return;
+		}
+		if(($scope.password).length < 6)
+		{
+		alert("password of 6 or more characters is required");
+		return;
+		}
+
+	    	$http({
+	            method: 'POST',
+	            url: '/insertUser',
+	            data: { "first_name": $scope.first_name,"last_name": $scope.last_name, "email": $scope.email, "password": $scope.password }
+
+	         }).success(function(response){
+
+
+	            if(response.registeration == "Successfull")
+	            {
+	           		alert("Registered Successfully");
+	           		window.location = '/signin';
+
+	            	}
+	            else
+	            {
+	            alert("This email address is already registered");
+	            	window.location = '/signin';
+	            	}
+	        }).error(function(error){
+	            alert("error");
+	        });
+	    };
+	});
+
+	</script>
+</body>
+</html>
